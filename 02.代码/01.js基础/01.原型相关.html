@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+        构造函数的用处
+            可以创建出一个属于自己类型的实例对象
+    
+        构造函数和普通函数的区别:
+            1.一个函数在没有被调用之前,是没办法分清楚是不是构造函数的
+            2.只有用new调用函数,那么该函数才会返回实例对象,那么该函数就是构造函数
+
+        注意:平常说的首字母大写,只是约定俗成的规则,可以不遵守
+    
+    */
+
+      /*
+        js内存结构分析
+            js内存一共分为2部分
+                栈内存
+                    只能存放地址值,基本数据类型,标识
+
+                堆内存
+                    可以存放对象数据类型,基本数据类型,地址值
+
+            注意:
+                1.其实变量和函数名是同一种东西,统称为标识
+                2.写代码的时候,两个对象可能出现嵌套关系,但是实际内存结构一定是兄弟关系(平级)
+                    外层对象中的某个属性,实际上存放的是另外一个对象的地址值
+    */
+
+      /*
+        原型相关
+            1.什么是原型?
+                -所有的构造函数都具有显式原型属性(prototype)
+                -所有的实例对象都具有隐式原型属性(__proto__)
+                -实例对象的隐式原型指向构造函数的显式原型
+                -每个原型对象身上,都具有一个constructor属性指向自己对应的构造函数(构造器)
+
+                总结:所谓的原型,其实指的就是一个对象,两个属性
+
+                    问题:什么样的对象,才能成为原型对象?
+                        被构造函数的prototype属性指向的对象,就是原型对象
+                        原型对象是构造函数的伴生对象,js在创建函数的同时,也会帮忙自动创建原型对象
+
+            2.为什么要使用原型?(原型的优点/好处)
+                直接目的:
+                    可以将一些数据存放在构造函数的原型对象上,那么该构造函数的实例对象都可以共享这些数据
+
+                最终目的:
+                    相比于每个实例对象都具有一个函数,将函数存放在原型对象上,
+                        可以实现所有实例对象共享一个函数,那么就可以减少内存的占用
+                            说白了,即便有一万个实例对象,也只会存在一个函数
+
+            3.怎么使用原型?
+                可以将一些方法,存放在原型对象上,方便构造函数的实例对象使用
+                    注意:如果是要添加方法,最好是在创建实例对象之前,就添加结束
+
+                js中,对象读取属性会走原型链
+                    他自己有,就是用自己的属性值
+                    他自己没有,就会顺着__proto__属性继续向上查找
+                    
+                js中,对象设置属性不会走原型链
+                    如果自己没有该属性,就新增该属性
+                    如果有该属性,就修改该属性的属性值
+
+            4.在哪使用过原型?
+    */
+      //   function Person() {
+      //     console.log(this);
+      //   }
+
+      //   function person() {
+      //     console.log(this);
+      //   }
+
+      //   var p1 = Person();
+      //   console.log('p1',p1)
+
+      //   var p1 = new person();
+      //   console.log("p1", p1);
+
+      //---------------------------------------
+
+      //   function Person(name) {
+      //     this.name = name;
+      //   }
+
+      //   var p1 = new Person("xiaoming");
+      //   console.log("p1", p1);
+
+      //   Person = 1;
+      //   console.log(Person)
+      //---------------------------------
+    //   function Person(name) {
+    //     // 只要构造调用一个函数,那么该函数中的this就会是新创建的实例对象
+    //     this.name = name;
+    //     // this.say = function () {
+    //     //   console.log("hello!!!");
+    //     // };
+    //   }
+
+    //   Person.prototype.say = function () {
+    //     console.log("hello!!!");
+    //   };
+
+    //   var p1 = new Person("xiaoming");
+    //   var p2 = new Person("xiaohong");
+    //   p1.say();
+    //   p2.say();
+    //   console.log(p1.say === p2.say);
+
+    //---------------------------------------------
+    /*
+        new做的事情:
+            1.new会同步调用构造函数中的代码
+                同时还会自动声明形参,并将传入的实参数据赋值给形参
+
+            2.自动声明this,并向内部存入一个实例对象
+
+            3.会将实例对象的__proto__属性值,修改为当前构造函数的prototype
+
+            4.自动将this作为函数的返回值
+    
+    */
+    function Person(name) {
+        this.name = name;
+    }
+
+    var p1 = new Person("xiaoming");
+    console.log("p1", p1);
+
+    function person(name){
+        var that = new Object;
+
+        that.__proto__ = person.prototype;
+
+        that.name = name;
+
+        return that;
+    }
+    var p2 = person("xiaoming");
+    console.log('p2',p2)
+    </script>
+  </body>
+</html>

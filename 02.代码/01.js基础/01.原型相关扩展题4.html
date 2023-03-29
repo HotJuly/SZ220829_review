@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+      基本数据类型:number,string,boolean,null,undefined,symbol,bigint
+        需求:现在有一个data变量,需要打印出该变量中存储的数据的数据类型
+        解决方法:
+            1.typeof
+                语法: typeof data
+                返回值数据类型:string
+                返回值:
+                    1."number"  2."string"  3."boolean"
+                    4."undefined"   5."symbol"  6."bigint"
+                    7."object" 8."function"
+
+                优点:
+                    1.返回的数据类型很明确
+
+                缺点:
+                    1.会错误的将null判断为object
+                        扩展:对象在内存中,前三位是000存储,所以typeof以此进行判断
+                            结果null所有位都是0,所以出现误判
+
+                    2.无法区分对象数据类型
+
+            2.instanceof
+                语法: A instanceof B
+                返回值数据类型:boolean
+                返回值:true||false
+                    true代表A是B类型的
+                    false代表A不是B类型的
+
+                优点:
+                    他判断数据类型,非常精准,不存在误判的问题
+
+                缺点:
+                    他只能告诉你,A是不是B数据类型的,无法告知具体是哪一类
+
+            3.使用原型相关
+                可以借调使用对象原型上的toString方法实现
+        */
+
+      //   var data = [1, 2, 3];
+      var data = new Date();
+      //   console.log(typeof data)
+      //   console.log(data instanceof Array)
+      // console.log(data.toString())
+
+      // var obj = {
+      //     name:"小明",
+      //     age:23
+      // };
+      // console.log(obj.toString())
+      // console.log(Object.prototype.toString.call(data).split(' ')[1].replace(']',''))
+      // console.log({}.toString.call(data).split(' ')[1].replace(']',''))
+      console.log(data.__proto__.constructor.name);
+    </script>
+  </body>
+</html>

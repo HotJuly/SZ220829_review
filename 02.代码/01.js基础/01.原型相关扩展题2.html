@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+        /*
+            js中,对象读取属性会走原型链
+                他自己有,就是用自己的属性值
+                他自己没有,就会顺着__proto__属性继续向上查找
+                
+            js中,对象设置属性不会走原型链
+                如果自己没有该属性,就新增该属性
+                如果有该属性,就修改该属性的属性值
+        
+        */
+      function Person(name) {
+        this.name = name;
+      }
+
+      Person.prototype.c = 1;
+
+      var p1 = new Person("xiaoming");
+
+      p1.c += 1;
+    //   p1.c = p1.c + 1;
+    //   p1.c = (p1.c + 1);
+    //   p1.c = (p1.__proto__.c + 1);
+    //   p1.c = (Person.prototype.c + 1);
+    //   p1.c = (1 + 1);
+    //   p1.c = 2;
+
+      console.log(p1, p1.c, Person.prototype.c);
+    </script>
+  </body>
+</html>

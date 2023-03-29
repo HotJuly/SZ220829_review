@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+      string => String 
+      number => Number 
+      boolean => Boolean
+        在js中,
+          如果对一个基本数据类型,添加/读取他的某个属性,js就会临时创建一个对应的包装类对象进行替代
+
+      
+      */
+      // String.prototype.title = "666";
+
+      var str = "hello";
+
+      // 由于将基本数据类型当作对象使用,所以会临时创建一个String对象,并给他添加title属性
+      // 这行代码执行结束之后,该包装类对象会被立即销毁
+      str.title = "world";
+
+      // 由于此处又将基本数据类型当作对象使用,所以又会临时创建一个String对象
+      // 但是这个对象身上,并没有title属性,所以返回undefined
+      console.log(str + str.title);
+
+      // var num = 123;
+
+      // num.count = 4;
+
+      // console.log(num + num.count);
+    </script>
+  </body>
+</html>
