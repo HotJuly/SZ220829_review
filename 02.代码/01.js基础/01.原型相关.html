@@ -65,16 +65,26 @@
                 js中,对象读取属性会走原型链
                     他自己有,就是用自己的属性值
                     他自己没有,就会顺着__proto__属性继续向上查找
+                    如果查找当前原型对象上,没有找到该属性,
+                        还会继续顺这原型对象的__proto__属性,继续向上查找
+                    最终找到了Object.prototype.__proto__还没有找到该属性,就返回undefined
+
                     
                 js中,对象设置属性不会走原型链
                     如果自己没有该属性,就新增该属性
                     如果有该属性,就修改该属性的属性值
 
+
             4.在哪使用过原型?
+                1.将所有的接口函数全部存放到一个API对象上,然后将该对象放在Vue的原型对象上
+                    Vue.prototype.$API = API
+
+                2.Vue2中的全局事件总线写法(名称是可以自定义的,不一定非要是$bus)
+                    Vue.prototype.$bus = new Vue();
     */
-      //   function Person() {
-      //     console.log(this);
-      //   }
+        // function Person() {
+        //   console.log(this);
+        // }
 
       //   function person() {
       //     console.log(this);
