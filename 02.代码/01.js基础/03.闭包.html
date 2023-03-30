@@ -8,7 +8,7 @@
   </head>
   <body>
     <script>
-    /*
+      /*
         闭包
             1.闭包的产生条件
                 1.必须具有内外函数嵌套
@@ -26,7 +26,7 @@
             2.闭包的产生时机
                 外部函数被调用的时候,就会产生闭包
 
-            3.闭包的优点
+            3.闭包的优点(用处)
                 延长局部变量生命周期
                     问题:什么叫延长?
                     理解:本来只能存在一段时间,可以将改时间变长
@@ -41,15 +41,52 @@
                         同时本该在外部函数调用结束之后就要销毁的变量,由于这个内部函数还需要使用这个变量,
                         所以js引擎会所使用闭包将需要用到的变量,全部缓存起来,留作以后使用
 
-                可以实现js模块化
+                        垃圾回收机制会回收一些没有被使用的数据
+
+                可以实现js模块化(防止命名污染)
+                    可以很好的保证数据的安全性,并限制其他人对该数据的操作
+                        说白了,我们不提供操作数据的方法,其他人就没办法修改这个数据
+
+            4.闭包的缺点(副作用)
+                内存泄漏
+                    由于代码书写风格的原因,导致程序浪费更多的内存实现某些功能
+
+                内存溢出
+                    由于内存泄漏过多,导致内存存满,最终导致程序宕机(未响应)
+
+                我们可以接受的是内存泄漏,不能接受的是内存溢出
+
+            5.如何解决闭包的副作用?
+                尽量少使用闭包
+                要及时释放无用闭包占用的内存
+                    问题:为什么闭包不会销毁?
+                    原因:闭包只所以还能存活,是因为内部函数还存活着,而内部函数需要使用到闭包中缓存的变量,
+                        所以导致闭包不会销毁,占用的内存不会释放
+                
+                    解决:将对内部函数的所有引用全部释放掉,就会导致内部函数无人使用,
+                        那么内部函数就会被垃圾回收机制回收掉,那么闭包由于没人使用了,
+                        那么闭包也会被垃圾回收机制回收释放
+
+                        注意:多个内部函数会共享同一个闭包对象
+
+            6.闭包是什么?
+                闭包是一个对象
+                    闭包会缓存内部函数需要使用到的变量,以及他的变量值
+
+                    官方定义:闭包是函数与他周边的词法环境引用的组合
+                    简单理解:闭包是函数内部代码与他所存在的作用域生成的
+                        说白了:闭包就是根据函数内部代码,以及外部的变量对象组成的对象
+
+            7.闭包的使用场景
+                函数防抖和节流
+
     */
 
-    /*
+      /*
         栈结构
         数据类型:数组
         特点:先进后出,后进先出
         
-
         队列结构
         数据类型:数组
         特点:先进先出,后进后出
@@ -77,54 +114,169 @@
                 这个过程称为出栈
     */
 
-    function wrap(){
-        var a = 1;
+      //   function wrap(){
+      //       var a = 1;
 
-        function inner(){
-            console.log('inner',a)
+      //       function inner(){
+      //           console.log('inner',a)
+      //       }
+
+      //       // console.log(inner)
+      //       // window.fn = inner;
+      //       return inner;
+      //   }
+
+      //   var fn = wrap();
+      // // fn();
+      // console.log(fn)
+
+      //-------------------------------
+      // 面试就说,这种代码不会产生闭包
+      // var a = 1;
+      // function wrap(){
+      //     console.log(a)
+      // }
+      // wrap();
+
+      //------------------------------------
+      // function fn(){
+      //     var a = 1;
+      //     a++;
+      //     console.log(a);
+      // }
+
+      // fn();
+      // fn();
+      // fn();
+      // fn();
+
+      //------------------------------------
+      // var a = 1;
+      // function fn(){
+      //     function inner(){
+      //         console.log(a)
+      //     }
+      //     var a = 2;
+      //     inner();
+      // }
+
+      // fn();
+
+      //---------------------------------------
+      // var data = 1;
+      // var data = 2;
+      // console.log(data)
+
+      //   (function () {
+      //     var data = 1;
+
+      //     function getData() {
+      //       return data;
+      //     }
+
+      //     function addData() {
+      //         data+=1;
+      //     }
+
+      //     window.fns={
+      //         getData,
+      //         addData:addData
+      //     }
+
+      //   })();
+
+      //   // var data = 2;
+      //   fns.addData();
+      //   fns.addData();
+
+      //   var result = fns.getData();
+      //   result-=1;
+      //   console.log(result);
+
+      //   var result1 = fns.getData();
+      //   console.log(result1);
+
+      //----------------------------------------------
+      // function wrap(){
+      //       var a = 1;
+
+      //       function inner(){
+      //           console.log('inner',a)
+      //       }
+
+      //       return inner;
+      //   }
+
+      //   var fn = wrap();
+      //   var fn1 = fn;
+      //   fn = null;
+      //   fn1 = null;
+
+      //-----------------------------------------------
+    //   function wrap() {
+    //     var a = 1;
+
+    //     function inner1() {
+    //       a++;
+    //       console.log("inner1", a);
+    //     }
+
+    //     function inner2() {
+    //       a += 2;
+    //       console.log("inner2", a);
+    //     }
+
+    //     return {
+    //         inner1,
+    //         inner2
+    //     };
+    //   }
+
+    //   var {inner1,inner2} = wrap();
+
+    //   inner1();//2
+    //   inner1();//3
+    //   inner1();//4
+    //   inner1();//5
+    //   inner1();//6
+
+    //   inner2();//8  3
+    //   inner2();//10 5
+    //   inner2();//12 7
+    //   inner2();//14 9
+    //   inner2();//16 11
+
+    //   inner1 = null;
+    //   inner2();//18 3
+    //   inner2 = null;
+
+    //   var {inner1,inner2} = wrap();
+
+    //   inner1();//19 2
+    //   inner2();//21 4
+
+    //--------------------------------------------------
+    function wrap() {
+        var a = 1;
+        var b = 2;
+        var c = 3;
+        var d = 4;
+
+        function inner1() {
+          console.log("inner1", a,b);
         }
 
-        // console.log(inner)
-        // window.fn = inner;
-        return inner;
-    }
+        function inner2() {
+          console.log("inner2", b,c);
+        }
 
-    var fn = wrap();
-    // fn();
-    console.log(fn)
+        return {
+            inner1,
+            inner2
+        };
+      }
 
-    //-------------------------------
-    // 面试就说,这种代码不会产生闭包
-    // var a = 1;
-    // function wrap(){
-    //     console.log(a)
-    // }
-    // wrap();
-
-    //------------------------------------
-    // function fn(){
-    //     var a = 1;
-    //     a++;
-    //     console.log(a);
-    // }
-
-    // fn();
-    // fn();
-    // fn();
-    // fn();
-
-    //------------------------------------
-    // var a = 1;
-    // function fn(){
-    //     function inner(){
-    //         console.log(a)
-    //     }
-    //     var a = 2;
-    //     inner();
-    // }
-
-    // fn();
-
+      var {inner1,inner2} = wrap();
     </script>
   </body>
 </html>
