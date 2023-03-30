@@ -21,6 +21,7 @@
             js中只存在词法作用域,不存在动态作用域
 
             作用域会约束变量的使用范围
+                注意:作用域是用来限制变量的可见范围,不是说变量值的可见范围
 
             作用域是变量的查找规则
                 -变量的使用规则(作用域链)
@@ -30,6 +31,7 @@
                     注意:变量的查找只能从内向外,不能从外向内查找
 
                 -预解析规则
+
 
         2.预解析规则说明
             1.什么是预解析?
@@ -55,6 +57,8 @@
 
             3.预解析的范围
                 预解析只会将标识声明提升到当前作用域的最顶端
+
+                    注意:预解析不存在穿透作用域的情况,他只会提升到当前作用域最顶端
 
             4.预解析的优先级
                 函数提升优先于变量提升
@@ -83,22 +87,31 @@
 
             注意:
                 全局作用域一定是最大的作用域,块级作用域和函数作用域的大小不一定
+
+        4.形参默认值
+            1.如果给函数添加形参默认值写法,那么
+                形参还是属于当前函数作用域中
+                函数内部的代码全部属于块级作用域中
+                    注意:这个块级作用域是临时生成的
+
+            2.如果函数的形参和函数内部的某个变量名称同名,那么他们会共享初始值
+                注意:后续形参以及同名变量互不影响
     */
 
-      //   var a = 1;
+      // var a = 1;
 
-      //   function wrap() {
-      //     var a = 2;
-      //     function inner() {
-      //       console.log("inner", a);
-      //     }
-
-      //     inner();
-      //     return inner;
+      // function wrap() {
+      //   var a = 2;
+      //   function inner() {
+      //     console.log("inner", a);
       //   }
 
-      //   var fn = wrap();
-      //   fn();
+      //   inner();
+      //   return inner;
+      // }
+
+      // var fn = wrap();
+      // fn();
 
       //----------------------------------
       // console.log(a)
@@ -186,28 +199,132 @@
       // console.log('two',a)
 
       //---------------------------------
-      var a = 1;
-      let obj = {
-        a: 2,
-        fn: function () {
-          console.log("one", a);
-        },
-      };
-      obj.fn();
-      console.log("two", a);
+      //   var a = 1;
+      //   let obj = {
+      //     a: 2,
+      //     fn: function () {
+      //       console.log("one", a);
+      //     },
+      //   };
+      //   obj.fn();
+      //   console.log("two", a);
 
-    //   if(true){
-    //     let a = 1;
+      //   if(true){
+      //     let a = 1;
+      //   }
+
+      //   console.log(a)
+
+      // function wrap(){
+      //     if(true){
+      //         let a=1;
+      //     }
+      // }
+
+      //------------------------------
+      // function wrap(){
+      //     var obj = {
+      //         name:"xiaoming"
+      //     }
+
+      //     // window.result2 = obj;
+      //     // 此处不是在将obj变量返回给全局使用,而是把obj存的值返回给全局使用
+      //     return obj;
+      // }
+      // var result = wrap();
+      // console.log(result2)
+
+      //-------------------------------------
+
+      // function fn(x,y = 7){
+      //     // 形参其实就是当前函数中的局部变量
+      //     // 形参的本质其实就是变量
+      //     // 他的初始值来源于用户调用函数传入的实参,它存储的值可以发生变化
+      //     // 在函数中声明与形参相同名称的变量,是无效的,因为形参本质就是变量,相当于重复声明
+      //     var a = 1;
+      //     var b = 2;
+      //     // var x;
+      //     var y;
+      //     y = 6
+      //     console.log(a,b,x,y)
+      // }
+      // fn(3)
+
+      //---------------------------------------
+      //   var x = 1;
+
+      //   function fn(
+      //     x,
+      //     y = function () {
+      //       x = 3;
+      //       console.log("two", x);
+      //     }
+      //   ) {
+      //     console.log("one", x);
+      //     var x = 2;
+      //     y();
+      //     console.log("three", x);
+      //   }
+
+      //   fn();
+      //   console.log("four", x);
+
+      //-------------------------------------------
+      //   var x = 1;
+
+      //   function fn(
+      //     x,
+      //     y = function () {
+      //       x = 3;
+      //       console.log("two", x);
+      //     }
+      //   ) {
+      //     console.log("one", x);
+      //     // var x = 2;
+      //     y();
+      //     console.log("three", x);
+      //   }
+
+      //   fn();
+      //   console.log("four", x);
+      //-------------------------------------------
+
+    //   var x = 1;
+
+    //   function fn(
+    //     xx,
+    //     y = function () {
+    //       x = 3;
+    //       console.log("two", x);
+    //     }
+    //   ) {
+    //     console.log("one", x);
+    //     var x = 2;
+    //     y();
+    //     console.log("three", x);
     //   }
 
-    //   console.log(a)
+    //   fn();
+    //   console.log("four", x);
+      //-------------------------------------------
 
+    //   var x = 1;
 
-    // function wrap(){
-    //     if(true){
-    //         let a=1;
+    //   function fn(
+    //     x = 4,
+    //     y = function () {
+    //       x = 3;
+    //       console.log("two", x);
     //     }
-    // }
+    //   ) {
+    //     console.log("one", x);
+    //     var x = 2;
+    //     y();
+    //     console.log("three", x);
+    //   }
+
+    //   fn();
+    //   console.log("four", x);
     </script>
   </body>
 </html>
