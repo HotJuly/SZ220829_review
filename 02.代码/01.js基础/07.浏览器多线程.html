@@ -1,50 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <ul>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul>
       <li>aaa</li>
       <li>bbb</li>
       <li>ccc</li>
-  </ul>
-  <button id="test">test</button>
-  <div id="content">
-      aaaaaaa
-  </div>
-  <script>
-      Promise.resolve().then(() => { // 微任务
-          alert('promise1') // 页面渲染了吗?
-      }) 
+    </ul>
+    <button id="test">test</button>
+    <div id="content">aaaaaaa</div>
+    <script>
+      /*
+        js引擎(js线程)是单线程的
+            也就是说他同时只能做一件事情
 
-      Promise.resolve().then(() => { // 微任务
-          alert('promise2') // 页面渲染了吗?
-      }) 
+        浏览器是一个多进程多线程的软件
+            每个标签页都是一个独立的进程,它内部具有的线程:
+                1.js线程
+                2.GUI线程
+                    GUI线程他负责页面的渲染
+                3.使用web Worker创建的新的分线程
 
-      setTimeout(() => {// 宏任务
-          alert(document.getElementById('content').innerHTML)  // 页面渲染了吗?
-      }, 0)
+            注意:GUI线程和JS线程是互斥的,不能同时工作
 
-      document.getElementById('test').onclick = () => {// 宏任务
+        首次页面整体流程:
+            首先执行主线程代码->清空微任务队列->GUI线程渲染页面->执行下一个宏任务
 
-          document.getElementById('content').innerHTML = 'xxxx'
+        更新页面整体流程:
+            清空微任务队列->GUI线程渲染页面->执行下一个宏任务
 
-          alert(document.getElementById('content').innerHTML)
+        问题:渲染和挂载是否相同?
+        回答:
+            他们不是同一个东西,但是他们有联系
+            只要触发了挂载,页面就会发生渲染
 
-          setTimeout(() => {// 宏任务  
-              alert(document.getElementById('content').innerHTML) // 页面更新渲染了吗?
-          }, 0); 
+            挂载->将DOM结构更新到html标签中
+            渲染->将html标签中的最新结果,绘制到页面上给用户观看
 
-          Promise.resolve().then(() => { // 微任务 
-              alert('promise3') //页面更新渲染了吗?
-          }) 
+            挂载操作是同步的,渲染是异步的
+
+        问题:明明已经有了宏任务可以延迟代码的执行,为什么还要推出微任务?
+        回答:
+            跟页面的更新渲染有关系
+            假设此时需要修改10W次页面
+                如果在10W个宏任务中,每个宏任务都修改一次页面,页面渲染次数10W次
+                如果在10W个微任务中,每个微任务都修改一次页面,页面渲染次数1次
+
+            扩展:其实Vue中更新DOM方面,就是放在微任务中实现的
+
+    */
+      //   Promise.resolve().then(() => { // 微任务
+      //       alert('promise1') // 页面渲染了吗?
+      //   })
+
+      //   Promise.resolve().then(() => { // 微任务
+      //       alert('promise2') // 页面渲染了吗?
+      //   })
+
+      //   setTimeout(() => {// 宏任务
+      //       alert(document.getElementById('content').innerHTML)  // 页面渲染了吗?
+      //   }, 0)
+
+      //   document.getElementById('test').onclick = () => {// 宏任务
+
+      //     // 这个就是一种挂载写法,修改了页面的DOM的内容
+      //     // 挂载是同步的,渲染是异步的
+      //     // 渲染是异步的原因,因为代码的执行速度太快了,用户根本体会不到内容的变化过程,所以对此进行了性能优化
+      //     //   document.getElementById('content').innerHTML = 'xxxx'
+      //     //   document.getElementById('content').innerHTML = 'xxxx1'
+      //     //   document.getElementById('content').innerHTML = 'xxxx2'
+      //     //   document.getElementById('content').innerHTML = 'xxxx3'
+      //     //   document.getElementById('content').innerHTML = 'xxxx4'
+      //     //   document.getElementById('content').innerHTML = 'xxxx5'
+      //     //   document.getElementById('content').innerHTML = 'xxxx6'
+      //     //   document.getElementById('content').innerHTML = 'xxxx7'
+      //     //   document.getElementById('content').innerHTML = 'xxxx8'
+      //       document.getElementById('content').innerHTML = 'xxxx'
+
+      //       alert(document.getElementById('content').innerHTML)
+
+      //       setTimeout(() => {// 宏任务
+      //           alert(document.getElementById('content').innerHTML) // 页面更新渲染了吗?
+      //       }, 0);
+
+      //       Promise.resolve().then(() => { // 微任务
+      //           alert('promise3') //页面更新渲染了吗?
+      //       })
+      //   }
+
+      //   alert('1111') // 页面渲染了吗?
+
+      //-------------------------------------
+      // var h1 = document.createElement('h1');
+      // h1.innerText = "我是H1标签";
+
+      // document.body.appendChild(h1);
+
+      // console.log(document.body.children);
+
+      // alert(111)
+
+      //-------------------------------------
+      // var content = document.getElementById('content');
+      // for (let index = 0; index < 100000; index++) {
+      //     // setTimeout(()=>{
+      //     //     content.innerText = index;
+      //     // },10*index);
+
+      //     Promise.resolve().then(()=>{
+      //         content.innerText = index;
+      //     })
+      // }
+
+      //--------------------------------------------------
+      /*
+        面试题:请问如果在主线程代码中,出现一个100E次的for循环,页面能否立即看到
+        回答:
+            js线程和GUI线程是互斥的,而且GUI线程渲染页面的时间,是在微任务队列清空之后
+            所以如果主线程代码被for循环阻塞了10s,页面也会延迟10s渲染
+
+        面试题2:请问有没有什么方法,能够加快这里页面的渲染?
+        回答:
+            可以使用web worker可以开启额外的线程,将比较费时间的事情,交给这个线程去做
+            那么就可以防止主线程的阻塞,加快页面渲染
+
+        流程:
+            1.创建worker实例对象,会同时创建一个新的分线程
+                需要提前准备好worker.js文件
+                该文件内部,需要写好onmessage监听
+
+            2.将需要执行的代码,以字符串的形式,发送给新创建的分线程执行
+                语法:worker.postMessage(需要执行的代码字符串)
+
+            3.由于主线程执行了postMessage方法,所以会触发worker.js文件中的onmessage的回调函数
+            
+            4.在worker.js文件中的onmessage的回调函数中,我们使用eval函数,将传过来的代码字符串进行执行
+
+            5.最终,等分线程执行完所有的代码之后,分线程在使用postMessage,将处理好的数据发回给主线程即可
+
+            注意:分线程中执行的代码,不会阻塞主线程代码的执行,所以相当于可以加快主线程代码
+
+    
+    */
+
+      function fn() {
+        for (var index = 0; index < 10000000000; index++) {}
+        // console.log(index);
+        return index
       }
-      
-      alert('1111') // 页面渲染了吗?
 
-  </script>
-</body>
+    //   console.log(fn.toString());
+
+      const worker = new Worker("./07.worker.js");
+      worker.postMessage(`${fn.toString()}; var result = fn(); postMessage(result)`);
+
+      worker.onmessage = function (e) {
+        console.log("主线程", e);
+      };
+    </script>
+  </body>
 </html>
