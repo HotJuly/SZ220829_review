@@ -105,15 +105,16 @@
         function fn(name) {
           console.log(this);
         }
+        // fn();
 
-        console.dir(fn)
+        // console.dir(fn)
 
-        // var obj = {
-        //     name:"xiaoming",
-        //     f1:fn
-        // }
+        var obj = {
+            name:"xiaoming",
+            f1:fn
+        }
 
-        // obj.f1();
+        obj.f1();
 
         // new fn();
 
