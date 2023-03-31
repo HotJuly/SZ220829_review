@@ -114,19 +114,20 @@
                 这个过程称为出栈
     */
 
-      //   function wrap(){
-      //       var a = 1;
+      function wrap() {
+        var a = 1;
 
-      //       function inner(){
-      //           console.log('inner',a)
-      //       }
+        function inner() {
+          console.log("inner", a);
+        }
 
-      //       // console.log(inner)
-      //       // window.fn = inner;
-      //       return inner;
-      //   }
+        // console.log(inner)
+        // window.fn = inner;
+        return inner;
+      }
 
-      //   var fn = wrap();
+      var fn1 = wrap();
+      var fn2 = wrap();
       // // fn();
       // console.log(fn)
 
@@ -213,70 +214,70 @@
       //   fn1 = null;
 
       //-----------------------------------------------
-    //   function wrap() {
-    //     var a = 1;
+      //   function wrap() {
+      //     var a = 1;
 
-    //     function inner1() {
-    //       a++;
-    //       console.log("inner1", a);
-    //     }
+      //     function inner1() {
+      //       a++;
+      //       console.log("inner1", a);
+      //     }
 
-    //     function inner2() {
-    //       a += 2;
-    //       console.log("inner2", a);
-    //     }
+      //     function inner2() {
+      //       a += 2;
+      //       console.log("inner2", a);
+      //     }
 
-    //     return {
-    //         inner1,
-    //         inner2
-    //     };
-    //   }
+      //     return {
+      //         inner1,
+      //         inner2
+      //     };
+      //   }
 
-    //   var {inner1,inner2} = wrap();
+      //   var {inner1,inner2} = wrap();
 
-    //   inner1();//2
-    //   inner1();//3
-    //   inner1();//4
-    //   inner1();//5
-    //   inner1();//6
+      //   inner1();//2
+      //   inner1();//3
+      //   inner1();//4
+      //   inner1();//5
+      //   inner1();//6
 
-    //   inner2();//8  3
-    //   inner2();//10 5
-    //   inner2();//12 7
-    //   inner2();//14 9
-    //   inner2();//16 11
+      //   inner2();//8  3
+      //   inner2();//10 5
+      //   inner2();//12 7
+      //   inner2();//14 9
+      //   inner2();//16 11
 
-    //   inner1 = null;
-    //   inner2();//18 3
-    //   inner2 = null;
+      //   inner1 = null;
+      //   inner2();//18 3
+      //   inner2 = null;
 
-    //   var {inner1,inner2} = wrap();
+      //   var {inner1,inner2} = wrap();
 
-    //   inner1();//19 2
-    //   inner2();//21 4
+      //   inner1();//19 2
+      //   inner2();//21 4
 
-    //--------------------------------------------------
-    function wrap() {
+      //--------------------------------------------------
+      function wrap() {
         var a = 1;
         var b = 2;
         var c = 3;
         var d = 4;
 
         function inner1() {
-          console.log("inner1", a,b);
+          console.log("inner1", a, b);
         }
 
         function inner2() {
-          console.log("inner2", b,c);
+          console.log("inner2", b, c);
         }
 
         return {
-            inner1,
-            inner2
+          inner1,
+          inner2,
         };
       }
 
-      var {inner1,inner2} = wrap();
+      var { inner1, inner2 } = wrap();
     </script>
   </body>
 </html>

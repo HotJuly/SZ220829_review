@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+        this
+            this本身是一个关键字
+            this的本质其实就是一个变量(类似于形参)
+                形参->名称有开发者定义,他的值,是来源于开发者调用函数的时候传入的实参
+                this->名称是浏览器定义,他的值,是来源于浏览器传入的某个数据(对象)
+
+            this里面存的都是对象,这个对象就是当前函数的调用者(也就是谁调用了该函数)
+
+            this的值,与函数的声明位置无关,与调用位置无关,与调用方式有关
+
+        常见this指向:
+            1.普通调用->this是window
+                例如:fn();
+
+                扩展:
+                    在严格模式下,普通调用的this会是undefined
+                    在非严格模式下,只要this是undefined,都会被强行改成window
+
+            2.隐式调用->this是找到方法的实例对象
+                例如:obj.fn();  此时this就是obj
+
+            3.构造调用->this是创建出来的全新的实例对象
+                例如:new fn();
+
+            4.显式调用->this是强行执行的一个对象
+                例如: call/apply/bind方法都有这种效果
+                    fn.call(obj) -> 此时this就是obj
+
+
+        特殊的this指向:
+            1.事件回调函数
+                div.onclick=function(){}
+
+                事件回调函数中的this,会指向事件源对象
+                事件源的意思是,谁绑定了该事件,谁就是事件源
+
+            2.定时器
+                setTimeout(function(){},2000);
+                定时器回调函数的this指向window
+
+            3.Vue
+                computed,watch,methods,生命周期钩子函数等中,this都会指向当前组件实例对象
+
+            4.React
+                类组件
+                    class App extends Component{
+                        a(){}   这种的this是undefined
+                        a=()=>{}    这种的this是当前组件实例对象
+                    }
+                函数组件
+                    this是undefined
+
+            5.小程序
+                事件回调函数,生命周期钩子函数中,this是当前页面实例对象(Page的实例对象)
+
+            6.箭头函数
+                他是ES6新增的特性
+                他非常的特殊,他的this与声明位置有关,与调用方式无关
+                他没有属于自己的this,他每次使用this都会找外层作用域获取(借用)
+
+                面试题1:请问箭头函数能否被call/apply/bind,强行改变this指向?
+                回答:不能,因为他没有自己的this
+                    注意:call会执行成功,但是没有效果
+
+                面试题2:请问箭头函数能否被构造调用?
+                回答:不能,因为他没有自己的this,他不是一个构造器
+                    注意:此处不是无效,是报错
+
+                面试题3:请问箭头函数是否拥有属于自己的原型对象?
+                回答:没有,因为他没有创建实例对象的能力,所以他不需要原型对象
+
+    */
+
+        // function fn(name) {
+        //   console.log(this);
+        // }
+        // fn();
+
+      //---------------------------
+
+        // function wrap() {
+        //   function fn(name) {
+        //     console.log(this);
+        //   }
+
+        //   fn();
+
+        //   return fn;
+        // }
+        // var f = wrap();
+        // f();
+
+      //-------------------------
+        function fn(name) {
+          console.log(this);
+        }
+
+        console.dir(fn)
+
+        // var obj = {
+        //     name:"xiaoming",
+        //     f1:fn
+        // }
+
+        // obj.f1();
+
+        // new fn();
+
+        // fn.call(window);
+
+        // window.fn();
+
+        var a = ()=>{
+            console.log(this);
+        }
+        // a();
+        // a.call(obj);
+
+        // new a();
+
+        console.dir(a)
+
+        // obj.f1 = a;
+
+        // obj.f1();
+
+
+
+        // a.b.c.d.e.f.g.h();
+    </script>
+  </body>
+</html>

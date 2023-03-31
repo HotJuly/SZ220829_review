@@ -39,6 +39,10 @@
         原型相关
             1.什么是原型?
                 -所有的构造函数都具有显式原型属性(prototype)
+
+                    注意:由于一个函数是否是构造函数,只有在函数调用的时候才能确定
+                        所以,即便是普通函数也会具有原型对象
+                        
                 -所有的实例对象都具有隐式原型属性(__proto__)
                 -实例对象的隐式原型指向构造函数的显式原型
                 -每个原型对象身上,都具有一个constructor属性指向自己对应的构造函数(构造器)
@@ -82,9 +86,9 @@
                 2.Vue2中的全局事件总线写法(名称是可以自定义的,不一定非要是$bus)
                     Vue.prototype.$bus = new Vue();
     */
-        // function Person() {
-        //   console.log(this);
-        // }
+    // function Person() {
+    //   console.log(this);
+    // }
 
       //   function person() {
       //     console.log(this);

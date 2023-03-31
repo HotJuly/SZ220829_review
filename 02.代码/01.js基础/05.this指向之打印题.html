@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var length = 6;
+
+      var obj = {
+        length: 7,
+        fn: function () {
+          return this.length;
+        },
+      };
+
+      (function () {
+        var length = 8;
+
+        /*
+            问题:什么是伪数组?
+            回答:
+                1.以下标存储数据
+                2.具有length属性
+                3.他不能使用数组的方法
+
+                伪数组,数组都是对象
+
+                读取对象指定属性的值的写法:
+                    obj.name
+                    obj["name"]
+        
+        */
+
+        // arguments是伪数组,他会存储当前函数接收到的所有实参
+        // 并以类似数组的形式进行存储
+        // console.log(arguments.0());
+        console.log(arguments[0]());
+      })(obj.fn);
+
+
+    //   var arr = []
+
+    //   function a(){
+    //     console.log(this)
+    //   }
+    //   a();
+
+    //   arr[0] = a;
+    //   arr[0]();
+
+    var obj = {
+        fn:a
+    }
+    obj.fn();
+    </script>
+  </body>
+</html>
