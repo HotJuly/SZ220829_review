@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+      异步
+        将一件事件放到未来去做,就是异步(懒)
+        将一段代码延迟一段时间执行
+
+      问题:什么是回调函数?
+      回答:
+        1.我创建的
+        2.我没调用他
+        3.但是他执行了
+
+      问题:请问回调函数都是异步执行的吗?
+      回答:有,而且很多,例如数组相关的方法都是同步回调函数,例如Promise的执行器函数也是同步执行
+
+
+
+      异步任务
+        分为宏任务和微任务
+        宏任务是ES6之前就存在的
+        微任务是ES6之后才出现
+
+        用于存储多个宏任务的叫做宏任务队列
+        用于存储多个微任务的叫做微任务队列
+
+        队列
+          先进先出,后进后出
+
+        栈
+          先进后出,后进先出
+
+        setTimeout一定会同步执行,只是传递给他的回调函数会被异步执行
+
+        常见的宏任务:
+          1.定时器
+          2.请求相关
+          3.事件相关
+
+        常见的微任务:
+          1.Promise的.then方法
+          2.HTML5新增的mutationObserver
+            简介:它可以监视页面上某个DOM节点的结构变化,如果发生变化,就会执行对应的回调函数
+
+        以上这些其实不是宏任务/微任务,他们只是开启宏任务/微任务的手段
+
+        异步任务的执行时间:
+          延迟到主线程代码执行结束为止
+
+        代码执行顺序:
+          首先执行主线程代码->清空微任务队列->执行下一个宏任务
+
+          注意:微任务队列是清空,宏任务队列是取出一个执行
+            每次执行完一个宏任务,都一定会去微任务队列查看一下
+
+        面试题:请问js中,是宏任务优先还是微任务优先?
+        回答:
+          如果把主线程代码当作第一个宏任务来看待,那么就是宏任务优先
+          如果不把主线程代码当作是第一个宏任务,那么就是微任务优先
+    
+    */
+      // [1, 2, 3].forEach(item => {
+      //   console.log(item)
+      // })
+      // console.log('a forEach()之后')
+
+      // new Promise((resolve, reject) => { // excutor  执行器函数
+      //   console.log('b 执行excutor')
+      // })
+
+      // console.log('c new Promise()之后')
+
+      //---------------------------------------
+
+      // setTimeout(() => {
+      //   console.log('d 执行timout回调')
+      // }, 0);
+
+      // console.log('e setTimeout()之后')
+
+      // Promise.resolve(1).then(() => {
+      //   console.log('f promise成功的回调')
+      // })
+
+      // Promise.resolve(1).then(() => {
+      //   console.log('g promise成功的回调')
+      // })
+
+      // console.log('h .then之后')
+
+      //-------------------------------------
+
+      setTimeout(() => {
+        console.log("1");
+
+        Promise.resolve(1).then(() => {
+          console.log("2");
+        });
+
+        Promise.resolve(1).then(() => {
+          console.log("3");
+        });
+      }, 0);
+
+      Promise.resolve(1).then(() => {
+        console.log("4");
+      });
+
+      setTimeout(() => {
+        console.log("5");
+      }, 0);
+    </script>
+  </body>
+</html>

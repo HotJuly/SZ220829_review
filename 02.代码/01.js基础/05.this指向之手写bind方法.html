@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+      前言
+        fn.call(obj)
+            fn称为被借调函数
+            call称为借调函数
+                因为他天天调用别人
+            obj称为被强行改变的this指向
+
+        面试题:请问call方法和bind方法的区别
+        回答:
+            1.相同点
+                1.都可以给他们传入第一个实参,用于强行改变被借调函数的this指向
+
+                2.他们接收实参的个数相同 都是0->无限大
+                    他们都会将第二个实参开始的数据,全部传给被借调函数使用
+
+                3.如果没有传入第一个实参(undefined||null),那么被借调函数的this指向就会变成window
+                    如果传入的是number||string||boolean,那么被借调函数的this就会变成对应的包装类对象
+
+            2.不同点
+                1.被借调函数的执行时机不同
+                    call方法会立即调用被借调函数
+                    bind方法不会立即调用被借调函数
+
+                2.返回值不同
+                    call方法会将被借调函数的返回值,作为自己的返回值使用
+                    bind方法会返回一个被改变了this指向的全新函数
+
+                3.改变this指向的时效性不同
+                    call方法只会影响到本轮执行的this指向
+                    bind方法会永久修改返回的全新函数的this指向
+
+                    扩展:
+                        而且这个所谓的永久,后续无法再次修改他的this指向(包括call/apply/bind)
+
+                4.传参的次数不同
+                    call方法由于是立即调用被借调函数,所以他只有1次传入实参的机会
+                    bind方法由于不会立即调用被借调函数,所以他有1次传入实参的机会
+                        第一次是在调用bind的时候传入
+                        第二次是在调用返回的函数的时候传入
+
+    
+    
+    */
+      function fn(x, y, z) {
+        console.log("fn", this, x, y, z);
+        return x * y * z;
+      }
+
+      //    fn();
+
+      var obj = {
+        name: "xiaohong",
+      };
+
+      //   console.log(1)
+      //   fn.call(obj,1,2,3);
+      //   var fn2 = fn.bind(obj,6,7,8);
+      //   fn2();
+      // console.log(fn===fn2)
+      //   console.log(2)
+
+      //   fn.call(obj, 1, 2);
+      //   fn();
+
+      //   var fn2 = fn.bind(obj);
+      //   fn2(11,10,9);
+
+      //   fn2.call(window);
+
+      //-------------------------------------------------
+      //   Function.prototype.myBind = function (thatThis,...args) {
+      //     /*
+      //         this->被借调函数(fn)
+      //         thatThis->想要强行改变的this指向(obj)
+      //     */
+      //    var that = this;
+
+      //    return function(...args2){
+      //         var result = that.call(thatThis,...args,...args2);
+      //         return result;
+      //    }
+      //   };
+
+      //   var fn2 = fn.myBind(null, 2, 3);
+      //   console.log(fn2(6));
+
+      //   fn2.call(window);
+      //   console.log(fn2)
+
+      //----------------------------------------------------
+      /* 函数柯里化
+        他只是一种代码的书写风格
+        他不是js引擎内置的东西
+
+        将一个本来接收多个参数的函数,切割成多个函数嵌套,每层函数都只接收一个参数
+    */
+      //   function person(name, age, sex) {
+      //     return {
+      //       name,
+      //       age,
+      //       sex,
+      //     };
+      //   }
+
+      //   var p1 = person("xiaoming",23,'男');
+      //   var p2 = person("xiaowang",28,'男');
+      //   var p3 = person("xiaohong",21,'女');
+      //   console.log(p1,p2,p3)
+
+      //--------------------------------------
+      // function person(sex){
+      //     return function(name,age){
+      //         return {
+      //             name,
+      //             age,
+      //             sex
+      //         }
+      //     }
+      // }
+
+      // var woman = person('女');
+      // var p1 = woman('xiaohong',23);
+      // var p2 = woman('xiaolv',29);
+      // console.log(p1,p2)
+
+      //-----------------------------------------
+      // function person(sex){
+      //     return function(age){
+      //         return function(name){
+      //             return {
+      //                 name,
+      //                 age,
+      //                 sex
+      //             }
+      //         }
+      //     }
+      // }
+
+      // var woman = person('女');
+      // var young = woman(18);
+      // var p1 = young('xiaohong');
+      // var p2 = young('xiaolv');
+      // console.log(p1,p2)
+
+      //--------------------------------------
+      function person(age, sex, name) {
+        return {
+          name,
+          age,
+          sex,
+        };
+      }
+
+      //   var p1 = person(18,'女',"xiaozi")
+      //   console.log(p1)
+      
+      var young = person.bind(null, 18, "女");
+      var p1 = young("xiaozi");
+      console.log(p1);
+    </script>
+  </body>
+</html>
