@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+        Promise
+            数据类型:函数(严格来说是构造函数)
+            接收实参
+                个数:1个
+                数据类型:函数(我们称为执行器函数)
+                    执行器函数又会接收两个参数
+                        resolve
+                            调用该函数之后,可以将返回p1对象变成成功状态
+                        reject
+                            调用该函数之后,可以将返回p1对象变成失败状态
+                            同时还会在控制台中,输出报错信息
+                注意:
+                    1.该执行器函数的代码会被同步调用
+
+            返回值
+                一个promise实例对象(简称p1)
+                    重要属性:
+                        1.state
+                            pending->等待(默认值)
+                            resolved/fulfilled->成功/完成
+                            rejected->失败
+
+                            注意:state值发生变化之后,是不可逆的
+
+                        2.result
+                            该值的控制,可以通过给resolve或者reject函数传入实参来控制
+
+        .then
+            数据类型:函数
+            目的:监视前面promise对象的状态变化,并执行对应的回调函数
+            接收参数
+                个数:0-2个
+                第一个实参是成功回调,如果p1的状态变为成功,就执行该函数
+                第二个实参是失败回调,如果p1的状态变为失败,就执行该函数
+                    同时它可以捕获报错,防止控制台报错提示
+
+            返回值:
+                一定返回一个全新的promise对象(简称p2)
+                如何控制p2的状态?
+                    变为成功
+                        1.只要回调函数中的代码成功执行结束,那么p2的状态就会变为成功状态
+                        2.如果回调函数中返回的是一个成功的Promise对象,那么p2的状态就会变成成功
+
+                    变为失败
+                        1.只要回调函数中的代码没能执行结束,那么p2的状态就会变为失败状态
+                        2.如果回调函数中返回的是一个失败的Promise对象,那么p2的状态就会变成失败
+
+                注意:
+                    1.无论回调函数中,返回任何内容,p2都一定是一个全新的promise对象
+                        如果返回的是一个非Promise的数据,那么这个数据就会成为p2的result值
+                        如果返回的是一个Promise对象,那么p2的状态就会参考这个Promise对象的状态
+
+                    2.如果监视的promise状态发生变化,需要执行对应的回调函数
+                        结果没有对应的回调函数可以执行,那么当前.then返回的promise的状态会继承上一个promise的状态
+
+                    3..then方法只会在监视的promise状态确定之后,才能开启微任务
+    */
+
+      // var p1 = new Promise((resolve,reject)=>{
+      //     // console.log(1)
+      //     resolve(333);
+      //     // reject();
+      // });
+
+      // console.log(p1)
+
+      //-----------------------------------
+
+      //   var p1 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(333);
+      //     }, 1000);
+
+      //     setTimeout(() => {
+      //       reject(666);
+      //     }, 2000);
+      //   });
+
+      //   setTimeout(() => {
+      //     console.log(p1);
+      //   }, 3000);
+
+      //--------------------------------------
+      //   var p1 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(333);
+      //     }, 1000);
+      //   });
+
+      //   var p3 = Promise.resolve();
+
+      //   var p2 = p1.then(
+      //     () => {
+      //       console.log(1);
+
+      //       //   throw new Error();
+      //       //   return 999;
+
+      //       return p3;
+      //     //   return Promise.reject();
+      //     },
+      //     () => {
+      //       console.log(2);
+      //     }
+      //   );
+      //   console.log(p3===p2);
+
+      //---------------------------------
+      var p1 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(333);
+          //   resolve(333);
+        }, 1000);
+      });
+
+      p1.then(
+        () => {
+          console.log(1);
+        },
+        () => {
+          console.log(2);
+        }
+      ).then(
+        () => {
+          console.log(3);
+        },
+        () => {
+          console.log(4);
+        }
+      );
+    </script>
+  </body>
+</html>
