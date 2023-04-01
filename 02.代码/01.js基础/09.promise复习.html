@@ -65,6 +65,16 @@
                         结果没有对应的回调函数可以执行,那么当前.then返回的promise的状态会继承上一个promise的状态
 
                     3..then方法只会在监视的promise状态确定之后,才能开启微任务
+
+        .catch
+            数据类型:函数
+            目的:它可以监视前面promise对象的状态变化,如果变为失败就执行回调函数
+            接收参数:
+                个数:1个
+                数据类型:函数
+
+            原理:
+                .catch其实就是.then的语法糖
     */
 
       // var p1 = new Promise((resolve,reject)=>{
@@ -117,28 +127,86 @@
       //   console.log(p3===p2);
 
       //---------------------------------
+      //   var p1 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       reject(333);
+      //       //   resolve(333);
+      //     }, 1000);
+      //   });
+
+      //   p1.then(
+      //     () => {
+      //       console.log(1);
+      //     },
+      //     () => {
+      //       console.log(2);
+      //     }
+      //   ).then(
+      //     () => {
+      //       console.log(3);
+      //     },
+      //     () => {
+      //       console.log(4);
+      //     }
+      //   );
+
+      //-------------------------------------
+      //   var p1 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(333);
+      //     }, 1000);
+      //   });
+
+      //   p1.then(() => {
+      //     console.log(1);
+      //   });
+
+      //   Promise.resolve().then(() => {
+      //     console.log(2);
+      //   });
+
+      //---------------------------------------------
       var p1 = new Promise((resolve, reject) => {
         setTimeout(() => {
-          reject(333);
-          //   resolve(333);
+          resolve(333);
         }, 1000);
       });
 
-      p1.then(
-        () => {
-          console.log(1);
-        },
-        () => {
-          console.log(2);
-        }
-      ).then(
-        () => {
-          console.log(3);
-        },
-        () => {
+      //   p1.catch(() => {
+      //     console.log(1);
+      //   });
+
+      //   p1.then(
+      //     () => {
+      //       console.log(1);
+      //       throw new Error();
+      //     },
+      //     () => {
+      //       console.log(2);
+      //     }
+      //   )
+      //     .catch(() => {
+      //       console.log(3);
+      //     })
+      //     .then(
+      //       () => {
+      //         console.log(4);
+      //       },
+      //       () => {
+      //         console.log(5);
+      //       }
+      //     );
+
+      p1.then(() => {
+        console.log(1);
+        throw new Error();
+      })
+        .then(() => {
           console.log(4);
-        }
-      );
+        })
+        .catch(() => {
+          console.log(3);
+        });
     </script>
   </body>
 </html>
