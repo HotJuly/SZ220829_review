@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            ==不全等 它具有类型转换效果,值相同,类型不同也可以
+            ===全等 值相同,类型也得相同
+        
+
+            问题:js中.6个false值是哪些?
+            回答:null,undefined,0,NaN,"",false
+        */
+
+        /*
+            基本数据类型VS基本数据类型
+                toNumber
+
+            注意:null和undefined会互相相等,跟其他任何人都不等
+        */
+        // console.log("1",true==1);      //true   1===1
+        // console.log("2",true=="1");    //true   1===1
+        // console.log("3","2"==1);       //false  2===1
+        // console.log("4","a"==1);       //false  NaN===1
+        // console.log("5",true=="true"); //false  1===NaN
+        // console.log("6",true=="false");//false  1===NaN
+
+        /*
+            对象数据类型VS对象数据类型
+                比较地址值
+
+            语法糖:
+                [] -> new Array()
+                {} -> new Object()
+        */
+        // console.log("7",[]==[]);  //false  new Array === new Array
+        // console.log("8",{}=={});  //false  new Object === new Object
+        // console.log("9",[]===[]); //false
+        // console.log("10",{}==={});//false
+        // console.log("11",[]!==[]);//true
+        // console.log("13",{}!=={});//true
+
+
+        // /*
+        //     对象数据类型VS基本数据类型
+        //         1.首先使用valueOf的返回值比较
+        //         2.toString方法的返回值比较
+        
+        // */
+        // console.log("12",[]==![]);//true    []==(![]) => []==false => "" ==false =>0===0
+        // console.log("14",{}==!{});//false   {}==(!{}) => {}==false => "[object Object]" == false => NaN === 0
+
+        console.log("15",0=="0")    //true
+        console.log("16",0==[])     //true
+        console.log("17","0"==[])   //false "0"==""
+
+        console.log(0==new Number(0))   //true 0 == 0
+
+
+
+    </script>
+</body>
+</html>
