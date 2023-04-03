@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="wrap">
+      <h1>A</h1>
+      <h1>B</h1>
+      <span>C</span>
+      <span>D</span>
+    </div>
+    <script>
+      /*
+        1.什么是事件委托(事件委派)?
+            将当前元素的事件,绑定给父/祖先节点
+
+            事件委托不是浏览器自带的东西
+            事件委托是开发者,在开发代码的过程中,总结出来的一套代码写法
+                他是一种性能优化的代码写法
+
+            事件委托的原理就是根据事件冒泡实现的
+                子节点触发了某个事件,会自动冒泡触发父节点的同类型事件
+
+            注意:面试中,如果说到性能优化,一定要说没用之前有什么问题,用了之后得到了什么效果
+    
+        2.为什么要使用事件委托?
+            没有使用事件委托之前,存在的问题:
+                1.需要给每个节点,都绑定事件以及事件处理器
+                    多个事件处理器会浪费内存
+
+                2.后续新增的子节点,无法享受到之前绑定的事件
+
+            使用事件委托写法之后,得到的效果:
+                1.后续新增子节点,也可以享受到之前绑定的事件委托
+                2.减少了内存的消耗,因为此时只要给父/祖先节点绑定即可,从n个变为1个
+
+        3.怎么使用事件委托?
+            流程:
+                1.封装一个bindEvent函数,该函数接受四个实参
+                    1.事件源 2.事件名 3.事件处理器 4.目标对象的选择器字符串
+
+                2.调用bindEvent,并传入需要的参数,就可以给事件源绑定事件,实现事件委托
+
+                3.如果用户触发了事件源身上的事件,那么在bindEvent函数中,
+                    内部会对本次的目标元素,进行身份判断
+                    
+                4.如果满足流程1中传入的选择器字符串,那么就使用call方法调用流程1中传入的事件处理器
+                    否则不调用
+
+        4.在哪使用过事件委托?
+            前台首页的三级列表中会使用到
+
+    */
+
+      /*
+        需求:当用户点击span标签的时候,需要在页面上弹出提示框
+    
+    */
+      function bindEvent2(ele, type, fn, selector) {
+        ele.addEventListener(type, function (event) {
+          // event.target可以找到目标对象,this就是当前绑定事件的事件源wrap
+          const target = event.target;
+
+          if (selector) {
+            // matches方法,可以判断前面的DOM元素,是否满足后面传入的选择器的要求
+            // 如果满足条件匹配,就返回true,不匹配就返回false
+            if (target.matches(selector)) {
+              fn.call(target, event);
+            }
+          } else {
+            fn.call(ele, event);
+          }
+        });
+      }
+      var spans = document.querySelectorAll("span");
+      var wrap = document.querySelector("#wrap");
+
+      //   for (let index = 0; index < spans.length; index++) {
+      //     const span = spans[index];
+      //     span.onclick=function(){
+      //         alert('click span success')
+      //     }
+      //   }
+
+      //   基础版本事件委托:
+      //   wrap.onclick = function () {
+      //     alert("click span success");
+      //   };
+
+      bindEvent2(
+        wrap,
+        "click",
+        function () {
+            console.log(this)
+          alert("click span success");
+        },
+        "span"
+      );
+
+      var newSpan = document.createElement("span");
+      newSpan.innerText = "E";
+
+      wrap.appendChild(newSpan);
+    </script>
+  </body>
+</html>

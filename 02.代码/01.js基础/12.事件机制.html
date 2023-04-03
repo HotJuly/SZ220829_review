@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="div">点我</div>
+    <script>
+      /*
+        1.什么是事件?
+            事件就是指在程序运行的过程中,发生的事情或者操作
+                例如:在网页运行到时候,用户点击了了某个按钮
+
+                事件组成的三要素:
+                    1.事件源
+                    2.事件名
+                    3.事件处理器(又称为事件回调函数,事件监听)
+
+                例如,用户做了某些操作,浏览器就会触发对应的事件,然后自动调用对应事件处理器
+
+            事件机制->多个事件同时触发,那么他们执行顺序规则就是事件机制
+                事件机制是浏览器提供的
+
+        2.事件机制出现过几种?
+            1.事件捕获机制(网景)
+            2.事件冒泡机制(IE)
+            3.标准事件机制(又称为标准事件流,目前绝大多数浏览器都使用这个)
+
+        3.在标准事件机制中,一共分为几个阶段?
+            1.捕获阶段
+                从最外层的document开始,向内逐层触发同类型事件,直到最内层的目标元素为止
+
+            2.目标阶段
+                触发当前目标元素身上,所有的同类型事件
+
+            3.冒泡阶段
+                从最内层的目标元素开始,向外逐层触发同类型事件,直到最外层的document为止
+
+            注意:这三个阶段是一个整体,是一套完整的流程,任何一个地方断开,那么后续事件都不会触发
+
+        4.为什么要有事件机制?
+            浏览器提供事件机制的目的,是为了方便开发者和用户之间进行交互
+                可以根据用户的操作,实现更多的功能
+                可以监视到用户在该网页中的一举一动
+
+        5.怎么使用事件/事件机制?
+            DOM 0写法
+                语法:
+                    绑定事件语法:div.onclick = function(){}
+                    解绑事件语法:div.onclick = null
+                本质:在给div对象,添加onclick属性,并对其进行赋值操作
+                优点:
+                    1.绑定事件语法简单
+                    2.解绑事件语法更简单
+
+                缺点:
+                    1.由于该语法是在给属性进行赋值,
+                        导致一个事件只能有一个事件处理器
+
+            DOM 2写法
+                语法:
+                    绑定事件语法:div.addEventListener('click',function(){})
+                    解绑事件语法:div.removeEventListener('click',function(){})
+
+                本质:调用div对象身上的addEventListener方法,并对其传入实参
+                优点:
+                    1.由于该语法的本质是在调用函数,而函数是没有调用次数限制的
+                        所以,该语法可以给一个事件绑定多个事件处理器
+                缺点:
+                    1.绑定事件语法麻烦
+                    2.解绑事件语法更麻烦
+                        注意:想要解绑事件成功,传入的回调函数必须和绑定时候传入的是同一个
+
+                第三个实参相关:
+                    -数据类型:布尔值||对象
+                    布尔值:
+                        true->将事件绑定在捕获阶段
+                        false->将事件绑定在冒泡阶段(默认值)
+                    对象(扩展):
+                        capture属性
+                            true->将事件绑定在捕获阶段
+                            false->将事件绑定在冒泡阶段(默认值)
+                        passive属性
+                            true->代表事件处理器中,调用event.preventDefault才能有效
+                            false->代表事件处理器中,调用event.preventDefault会无效
+
+        6.如何阻止冒泡?
+            标准事件机制:event.stopPropagation();
+            IE冒泡机制:event.cancelBubble = true;
+
+            问题:请问如何阻止捕获?
+            回答:event.stopPropagation();
+                因为事件机制是一体的,所以这一个方法就可以阻止后续阶段的执行
+
+        7.在哪使用过事件机制?
+            事件委托
+
+
+    */
+      // div.onclick = function(){}
+
+      function fn() {
+        console.log("click success");
+      }
+
+      div.addEventListener("click", fn);
+
+      div.removeEventListener("click", fn);
+    </script>
+  </body>
+</html>
