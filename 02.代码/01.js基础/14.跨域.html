@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    /*
+        1.什么是跨域?
+            违反了浏览器的同源策略
+            问题:什么是同源?
+            回答:两个URL的协议名,域名(主机地址),端口号都相同的话,这连个URL就是同源的
+            
+            URL的组成部分:协议名+域名(主机地址)+端口号+查询字符串
+                查询字符串由路径和参数组成
+                例如:https://www.baidu.com:443/home?username=xiaoming
+
+            例子1:由于协议名不同,所以不同源
+                http://localhost:3000/home
+                ftp://localhost:3000/home
+
+            例子2:由于域名部分不相同,所以不同源
+                http://localhost:3000/home
+                http://127.0.0.1:3000/home
+
+            例子3:由于协议名不同,所以不同源
+                http://localhost:3000/home
+                https://localhost:3000/home
+
+            例子4:由于查询字符串不再同源判断标准之内,所以同源
+                http://localhost:3000/home?a=2
+                http://localhost:3000/about?a=1
+
+            扩展:http协议的默认端口是80,https协议的默认端口是443
+
+            扩展问题:跨域是否一定会报错?
+                回答:不一定
+                    -img/video/audio/link/script等标签,跨域请求不报错
+                    -服务器之间跨域不报错
+
+                    跨域其实是一种操作,该操作并不一定会得到严重的结果
+
+                问题:什么时候跨域请求会报错?
+                回答:
+                    只有在浏览器中,使用ajax发送请求的时候,才会出现跨域报错
+        
+        2.为什么要有跨域报错?
+            为了保证用户的数据安全,是一种安全策略
+            假设跨域请求,不报错,可能出现的问题:
+                前言:真网站称为A网站,假网站称为B网站
+            1.用户请求B网站的服务器,那么对方服务器就会将html文件返回给浏览器
+            2.用户的浏览器会展示B网站的网页
+            3.B网站会使用ajax,携带上A网站的cookie数据,向A网站服务器发送请求
+            4.A网站服务器接收到请求之后,根据cookie数据,确定用户身份,并返回用户重要数据
+            5.B网站成功接收到用户重要数据之后,再使用ajax请求,将数据发回给B网站的服务器
+
+            总结:这个过程中,用户的数据丢失了,A网站虽然没有丢失太多的东西,但是信誉受损
+                最终导致互联网环境变差,大家都不敢上网了
+
+        3.怎么解决跨域问题?
+
+
+    */
+    </script>
+</body>
+</html>
