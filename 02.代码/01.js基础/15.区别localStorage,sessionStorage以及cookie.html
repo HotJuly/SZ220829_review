@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    /*
+        以上三者都是浏览器用户存储数据的一部分,都可以成为浏览器的本地存储
+        最早出现的cookie,之后推出HTML5新特性的时候,才有了后续两个内容
+
+        1.生命周期
+            cookie
+                设置了max-age属性,如果没有超过最大存活时间的设置,数据将会一直存活
+                不设置max-age属性,那么当前cookie就是会话级cookie,
+                    存储的数据会在标签页或者浏览器关闭的时候,自动销毁
+
+            localStorage(持久化存储)
+                存在他身上的数据,只要不主动删除,就会永久存在
+
+            sessionStorage(会话级存储)
+                存在他身上的数据,如果关闭当前标签页或者浏览器,存储的数据就会丢失
+
+        2.存储位置
+            cookie
+                设置了max-age属性,存储于硬盘中
+                不设置max-age属性,存储于内存中
+
+            localStorage(持久化存储)
+                存储于硬盘中
+
+            sessionStorage(会话级存储)
+                存储于内存中
+
+        3.存储大小
+            cookie->4KB
+            localStorage->一般主流浏览器都是5MB,IE只有3012KB
+            sessionStorage->一般主流浏览器都是5MB,IE只有3012KB
+
+        4.使用范围
+            cookie
+                他的使用范围受到path和domain属性的控制
+                domain属性
+                    假设domian = "www.baidu.com"
+                    代表当前这个cookie,可以被当前域名以及他衍生出来的子域名使用
+
+                path属性
+                    假设path = "/a"
+                    代表当前这个cookie,可以被当前路由以及他衍生出来的子路由使用
+
+                总结:儿子可以使用父亲的cookie,父亲不能使用儿子的
+
+                扩展:HttpOnly属性的作用
+                回答:服务器可以给cookie添加该属性,可以限制前端网页读取使用该cookie
+
+            localStorage
+                他的使用范围和域名绑定
+                    即便是不同的标签页,只要域名相同,也可以共享localStorage的数据
+                    多个标签页会共享同一份数据,一边修改,所有页面的都会变化
+
+            sessionStorage
+                他的使用范围和域名以及标签页绑定
+                    该方案无法实现多个标签共享一份数据
+                    即便是复制标签页,他们两个的sessionStorage也不是同一份,是两份独立的数据
+
+        5.与服务器之间的关系
+            cookie(被借用的本地存储)
+                cookie是服务器创建,浏览器存储的
+                服务器会在响应头中,添加Set-Cookie属性,来将需要存储的cookie数据,发送给前端浏览器
+                浏览器会在请求头中,添加Cookie属性,来讲需要发送的cookie数据,发送给后端服务器
+
+                浏览器会自动存储cookie,还会自动发送cookie
+
+            localStorage
+                与服务器不熟,没有关系
+
+            sessionStorage
+                与服务器不熟,没有关系
+
+        6.使用场景
+            cookie
+                前端开发这块不常用,主要是给后端人员使用的
+                内部一般会保存一些用户的历史记录,用户个人头像,昵称,token标识等数据
+
+            localStorage
+                如果有些数据,下次启动项目还想使用,那就选择是用localStorage
+                比如,项目中,实现七天免登陆功能时,会使用到
+                    1.我们会将用户第一次登陆的token数据保存在localStorage中
+                    2.当用户第二次进行项目的时候,不需要用户再次前往login页面,手动登录
+                        我们会使用axios将上次保存的token数据,发送给info接口,兑换用户个人信息
+                    3.最终将请求得到的个人信息,展示在页面上
+
+            sessionStorage
+                sessionStorage相比于localStorage各方面都有差距,但是唯独他是存储于内存中
+                    他所有的操作都是内存级别的操作,速度非常快
+                        内存和硬盘的操作速度,差距甚至能达到万倍
+
+                如果有一个数据,是本次项目运行到时候,需要使用到的,那么选择使用sessionStorage
+                    例如:将用户本次登录的token保存起来,然后用于发送请求等操作
+
+                扩展:如果刷新当前页面,存储于sessionStorage中的数据不会丢失,Vuex的会丢失
+
+    */
+    </script>
+</body>
+</html>
