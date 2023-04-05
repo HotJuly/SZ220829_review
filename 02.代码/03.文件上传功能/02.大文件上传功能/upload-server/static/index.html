@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>上传文件</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <input type="file" id="uploaderInput" multiple="multiple" />
+    <div id="videoContent" style="visibility: hidden">
+      <video
+        id="video"
+        src=""
+        style="width: 400px"
+        muted
+        autoplay
+        controls
+      ></video>
+    </div>
+    进度:
+    <div id="process">0</div>
+  </body>
+</html>
+<script src="./js/jquery-1.12.4.js"></script>
+<script src="./js/md5.js"></script>
+<script src="./js/axios.js"></script>
+<script>
+  $('#uploaderInput').on('change',function(){
+    // console.log(this)
+    const file = this.files[0];
+
+    uploadOne(file)
+  })
+
+  async function uploadOne(file){
+    if(!file)return;
+
+    // 生成当前文件的唯一标识hash值
+    // 只要文件内容相同,生成的hash值也一定相同
+    // 生成hash值的目的,是为了服务器检查文件是否有缺失
+    const hash = await getHash(file);
+
+    const i = file.name.lastIndexOf('.');
+
+    const filename = file.name.slice(0,i) + new Date().getTime() + file.name.slice(i)
+
+    // 这是每次需要分享的文件大小
+    const shareSize = 2 * 1024 * 1024;
+
+    // 获取当前文件的总大小
+    const size = file.size;
+
+    // 计算出当前文件一共需要切割成多少份
+    const total = Math.ceil(size/shareSize);
+
+    // 代表已经发送了多少份
+    let index = 0;
+
+    // 用于上传一部分的文件
+    async function upload(){
+      const start = shareSize * index;
+      const end = shareSize * (index + 1)>size?size:shareSize * (index + 1);
+
+      // 切割需要的数据,准备发送
+      const data = file.slice(start,end);
+
+      const formData = new FormData();
+
+      formData.append('hash',hash);
+      formData.append('data',data);
+      formData.append('total',total);
+      formData.append('index',index);
+      formData.append('filename',filename);
+
+      const result = await axios.post('/uploadVideo',formData);
+
+      index++;
+
+      if(index<total){
+        // 进入这里说明文件还没有上传结束
+
+        $('#process').text(result.data.process)
+        upload();
+        // console.log(result)
+      }else{
+        // 进入这里说明文件已经上传结束
+        // console.log('成功了',result)
+        $('#videoContent').css('visibility','visible');
+        $('#video').attr('src',result.data.videoUrl);
+        $('#process').text(result.data.msg)
+
+      }
+    }
+
+    upload();
+  }
+
+  function getHash(file){
+    // 读取文件是一个异步的操作,时间根据文件大小是不一定的
+    // 所以我们故意生成一个Promise对象,
+    // 如果这个对象状态为成功就说明hash生成了,反之就是还没成功
+    return new Promise((resolve)=>{
+      // 浏览器自带FileReader函数,可以生成一个文件读取器
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload=function(e){
+        // console.log(e.target.result)
+        // 将文件的base64字符串,编译出一个唯一的hash值
+        const hash = hex_md5(e.target.result);
+        // console.log(hash)
+        resolve(hash);
+      }
+    })
+  }
+</script>
