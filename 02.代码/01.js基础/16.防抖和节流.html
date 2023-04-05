@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">点击</button>
+    <script>
+    /*
+        1.防抖和节流是什么?
+            防抖和节流不是浏览器提供的功能
+                他们是开发者,在开发过程中,研究出来的一种特殊的代码写法
+                    他们是一种提高代码性能的代码风格
+
+        2.为什么要使用防抖和节流?
+            问题:没有使用防抖和节流之前,按钮连续点击多次,多触发多次事件,执行多次事件回调函数
+                经常我们会在事件中,做发送请求之类的事情
+                    我们需要降低请求的发送频率,较少后端服务器的压力
+
+            总结:我们使用防抖和节流可以降低一个函数的执行频率
+
+            防抖:在一段时间之类,如果想要连续触发多次回调函数,那么最终只有最后一个回调函数会触发
+                也就是说,想要成功触发第一次回调函数,必须在该函数开启一段时间内,不能在开启第二次
+                
+
+            节流:在一段时间之类,如果想要连续触发多次回调函数,那么最终只有第一个回调函数会触发
+                也就是说,想要成功触发第二次回调函数,必须与第一次触发间隔超过规定时间
+
+            区别:
+                1.函数的执行时机
+                    节流->立即执行回调函数
+                    防抖->会延迟回调函数的执行时间
+
+                2.数据时效性不同
+                    节流->数据时效性很差,使用的都是旧数据
+                    防抖->数据时效性很好,使用的都是最新的数据
+
+        3.怎么使用防抖和节流?
+            如以下代码所示
+
+        4.在哪使用过防抖和节流?
+            节流的使用场景
+                例如:login页面的登录按钮
+                    我们可以限制用户在一段时间之内的触发登录接口的频率
+
+            防抖的使用场景
+                例如:搜索框的单词联想功能
+                    如果用户输入了关键字,我们会使用防抖来获取最新的数据,从而发送请求
+                        如果用户连续输入,那么第二次触发就会取消第一次触发
+
+
+
+    */
+    // btn.onclick = function(){
+    //     console.log('btn click success')
+    //     // 该函数中需要发送请求
+    //     // 
+    // }
+    function cb(){
+        console.log('btn click success')
+        // 该函数中需要发送请求
+        // 
+    }
+
+    // btn.onclick = throttle(cb,2000);
+
+    //以下代码是节流代码
+    // function throttle(callback,delay){
+    //     let startTime = 0;
+    //     return function(){
+    //         // 这个全新的匿名函数,才是真正的事件回调函数
+    //         // console.log(111)
+
+    //         if(Date.now() - startTime > delay){
+    //             startTime = Date.now();
+    //             callback();
+    //         }
+    //     }
+    // }
+
+    
+
+    //以下代码是防抖代码
+    btn.onclick = debounce(cb,2000)
+
+    function debounce(callback,delay){
+        let timer;
+        return function(){
+            if(timer){
+                clearTimeout(timer);
+            }
+            timer = setTimeout(()=>{
+                callback();
+            },delay)
+        }
+    }
+    </script>
+</body>
+</html>
