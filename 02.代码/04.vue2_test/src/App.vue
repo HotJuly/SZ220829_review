@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <h1>msg:{{ msg }}</h1>
-    <h1>user.name:{{ user.name }}</h1>
-    <h1>user.age:{{ user.age }}</h1>
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <!-- <h1>msg:{{ msg }}</h1>
+    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+
+    <input ref="input999" type="text" v-if="isEdit" />
+    <button v-else @click="handler">添加</button>
   </div>
 </template>
 
@@ -12,73 +13,105 @@ import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  // components中,其实就是在根据传入的配置对象,生成一个全新的构造函数
-  // 在template中,每使用一次这个构造函数,就会创建一个全新的组件实例对象
   components: {
-    HelloWorld: HelloWorld
+    HelloWorld
   },
   data() {
     return {
       msg: 123,
-      user:{
-        name:"xiaoming"
-      }
+      isEdit: false
+    }
+  },
+  methods: {
+    handler() {
+      this.isEdit = true;
+
+      this.$nextTick(() => {
+        this.$refs.input999.focus();
+      })
     }
   },
   mounted() {
     /*
-      响应式相关(数据驱动)
-  
-      1.请问什么是响应式属性?什么是非响应式属性?
-        响应式属性:当开发者修改该属性的值,会导致页面重新渲染,然后显示出最新结果
-        非响应式属性:当开发者修改该属性的值,没有导致页面重新渲染,显示出依旧是上次的数据
-  
-      2.响应式创建时机
-        1.当组件初始化的时候,data中所有的属性都会被数据劫持,变成响应式属性
-          注意:只要是data中存在的属性,会全部变成响应式的
+      面试题:请问Vue更新数据是同步更新还是异步更新?
+      回答:同步更新数据,
+          所以我们可以放心使用数据,每次使用都一定是当前最新
 
-        2.如果给一个响应式属性赋值,而且属性值是一个对象数据类型,那么这个对象中所有的属性,
-          都会经过数据劫持操作,全部变成响应式属性
-            注意:赋值的时候,有哪些属性,这些就全是响应式属性,后续新增的都是非响应式属性
+      面试题:请问Vue更新DOM是同步更新还是异步更新?
+      回答:异步更新DOM
 
-      3.如何快速分辨一个属性是否是响应式属性?
-        直接打印存有该属性的对象
-          如果属性值是(...),那么说明当前属性是响应式属性
-          如果属性值是直接显示原值,那么说明当前属性是非响应式属性
+      nextTick相关
+      1.nextTick是什么?
+        他是Vue提供的一个函数
 
-      4.如何额外添加响应式属性?
-        1.Vue.set(target,key/index,value)
-        2.this.$set(target,key/index,value)
-        3.Vue.observable(object)
+      2.nextTick的作用
+        nextTick可以接收一个回调函数
+        该回调函数,会被延迟到DOM更新之后才会执行
+          换种说法:在这个回调函数中,可以获取到最新的DOM节点
 
-      5.删除属性如何具有响应式效果?
-        1.Vue.delete(target,key/index)
-        2.this.$delete(target,key/index)
+          this.$nextTick(回调函数)
+
+      3.使用场景
+        比如说SPU模块的添加属性功能的编辑模式切换可以使用
+
+      4.nextTick原理
+        nextTick内部肯定有异步任务
+          通过代码的观察,可以知道它内部一定是微任务
+          Vue中的nextTick其实用的是.then实现的
+
+
+        流程总结:
+          1.如果开发者调用nextTick
+            那么nextTick会使用callbacks数组,收集开发者传入的所有的回调函数
+
+          2.如果是第一次调用nextTick,就会开启一个nextTick专用的微任务(其实就是.then)
+            后续调用nextTick不会在开启新的微任务
+
+            扩展:也就是说,只有在本次nextTick的回调函数全部执行结束之后,才有可能开启新的微任务
+
+          3.在nextTick专用的微任务中,Vue会遍历callbacks数组,取出内部所有的回调函数,依次执行
+
+
     */
 
-    setTimeout(() => {
-      // this.msg = 666;
-      // this.user.name = "laowang";
-      // this.user.age = 23;
+    // setTimeout(()=>{
+    //   this.msg = 666;
+    //   console.log(this.msg);
+    // },3000)
 
-      //------------------------------------
-      // this.user = {
-      //   ...this.user
-      // }
+    //------------------------------
 
-      // // this.user.age = 26;
-      // this.$set(this.user,'age',26);
+    // Promise.resolve().then(() => {
+    //   console.log(1)
+    // })
 
-      // setTimeout(()=>{
-      //   this.user.age = 30;
-      // },2000)
+    // setTimeout(() => {
+    //   console.log(2)
+    // }, 0)
 
-      //---------------------------------
-      // delete this.user.name;
-      this.$delete(this.user,'name')
+    // this.$nextTick(() => {
+    //   console.log(3)
+    // })
 
-      console.log(this.user)
-    }, 2000)
+    //-------------------------------
+    
+
+    Promise.resolve().then(() => {
+      console.log(1)
+    })
+
+    this.$nextTick(() => {
+      console.log(2)
+    })
+    
+    Promise.resolve().then(() => {
+      console.log(3)
+    })
+
+    this.$nextTick(() => {
+      console.log(4)
+    })
+
   }
 }
 </script>
