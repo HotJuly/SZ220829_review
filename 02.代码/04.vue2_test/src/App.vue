@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    app的数据:<input type="text" :value="msg">
-    <HelloWorld :msg="msg" :fn1="$options.fn1" :fn2="fn2"/>
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -10,22 +9,8 @@ import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  data(){
-    return{
-      msg:"我是APP的数据"
-    }
-  },
   components: {
     HelloWorld
-  },
-  fn1(data){
-    console.log(1,this)
-  },
-  methods:{
-    fn2(data){
-      // console.log(2,this)
-      this.msg=data
-    }
   }
 }
 </script>

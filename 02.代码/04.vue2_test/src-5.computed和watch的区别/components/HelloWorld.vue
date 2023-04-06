@@ -1,14 +1,26 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1 @click="handler">hello组件:{{ msg }}</h1>
   </div>
 </template>
 
 <script>
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  // props:{
+  //   msg:String
+  // }
+  props:["msg","fn1","fn2"],
+  // data(){
+  //   return{
+  //     msg:123
+  //   }
+  // },
+  methods:{
+    handler(){
+      // this.fn1('我是hello的数据')
+      this.fn2('我是hello的数据')
+    }
   }
 }
 </script>
