@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1 @click="handler">{{ msg }}</h1>
+    <h1 v-pre>{{ msg }}</h1>
+    <h1 v-once>{{ msg }}</h1>
+    <h1 @click="handler">{{ msg }}</h1>
   </div>
 </template>
 
@@ -9,6 +12,16 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods:{
+    handler(){
+      this.$emit('update:msg','我是hello的数据')
+    }
+  },
+  mounted(){
+    this.$bus.$on('abc',(data)=>{
+      console.log('abc',data)
+    })
   }
 }
 </script>

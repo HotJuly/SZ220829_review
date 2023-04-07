@@ -1,29 +1,48 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" a="1" b="2" @abc="()=>{}" @ddd="()=>{}"/> -->
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 
-      <HintButton size="big" type="danger" @click="handler1"/>
-      <HintButton size="small" type="primary" @click="handler2"/>
+    <!-- <A v-if="isShow"/>
+    <B v-else/> -->
+
+    <!-- <component :is="showComponent"></component>
+    <button @click="change">切换组件</button> -->
+
+    <!-- <KeepAlive></KeepAlive> -->
+    <keep-alive exclude="A" max="10">
+      <A v-if="isShow"/>
+      <B v-else/>
+    </keep-alive>
+    <button @click="isShow=!isShow">切换组件</button>
+
+    <!-- <keep-alive>
+      <router-view></router-view>
+    </keep-alive> -->
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import HintButton from './components/HintButton.vue'
+import A from './components/A.vue'
+import B from './components/B.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld,
-    HintButton
+  data(){
+    return{
+      isShow:0,
+      showComponent:A
+    }
   },
   methods:{
-    handler1(){
-      console.log('点击了删除')
-    },
-    handler2(){
-      console.log('点击了添加')
+    change(){
+      this.showComponent = this.showComponent===A?B:A;
     }
+  },
+  components: {
+    HelloWorld,
+    A,
+    B
   }
 }
 </script>

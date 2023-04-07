@@ -1,31 +1,25 @@
 <template>
   <div id="app">
-    <!-- <h1 ref="aaa">我是h1</h1>
-    <HelloWorld ref="world" msg="Welcome to Your Vue.js App"/> -->
-
-    <BigImage/>
+    <h1>APP的msg:{{msg}}</h1>
+    <HelloWorld :msg.sync="msg" />
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import BigImage from './components/BigImage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    BigImage
+    HelloWorld
   },
   data(){
     return{
-      msg:123
+      msg:"我是APP的初始数据"
     }
   },
   mounted(){
-    // console.log(this.$data)
-    // console.log(this.$children[0].msg1)
-    // console.log(this.$refs.world)
+    this.$bus.$emit('abc',this.msg)
   }
 }
 </script>
