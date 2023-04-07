@@ -10,9 +10,14 @@ export default {
   props: {
     msg: String
   },
+  data(){
+    return{
+      msg1:"我是hello的数据"
+    }
+  },
   mounted(){
-    // console.log(this.$props,this.$attrs)
-    console.log(this.$listeners)
+    // console.log(this.$parent.msg)
+    // console.log(this.$root.msg)
   }
 }
 </script>

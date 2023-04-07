@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>hello的ddd:{{ ddd }}</h1>
+    <h1>hello的user.name:{{ user.name }}</h1>
   </div>
 </template>
 
@@ -10,9 +11,12 @@ export default {
   props: {
     msg: String
   },
+  // inject接受的是属性值
+  inject:["ddd","user"],
   mounted(){
-    // console.log(this.$props,this.$attrs)
-    console.log(this.$listeners)
+    setTimeout(()=>{
+      this.user.name="老王"
+    },3000)
   }
 }
 </script>

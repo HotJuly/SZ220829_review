@@ -1,29 +1,31 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" a="1" b="2" @abc="()=>{}" @ddd="()=>{}"/> -->
+    <!-- <h1 ref="aaa">我是h1</h1>
+    <HelloWorld ref="world" msg="Welcome to Your Vue.js App"/> -->
 
-      <HintButton size="big" type="danger" @click="handler1"/>
-      <HintButton size="small" type="primary" @click="handler2"/>
+    <BigImage/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import HintButton from './components/HintButton.vue'
+import BigImage from './components/BigImage.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    HintButton
+    BigImage
   },
-  methods:{
-    handler1(){
-      console.log('点击了删除')
-    },
-    handler2(){
-      console.log('点击了添加')
+  data(){
+    return{
+      msg:123
     }
+  },
+  mounted(){
+    // console.log(this.$data)
+    // console.log(this.$children[0].msg1)
+    console.log(this.$refs.world)
   }
 }
 </script>
