@@ -9,15 +9,6 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  },
-  data(){
-    return{
-      msg1:"我是hello的数据"
-    }
-  },
-  mounted(){
-    // console.log(this.$parent.msg)
-    // console.log(this.$root.msg)
   }
 }
 </script>

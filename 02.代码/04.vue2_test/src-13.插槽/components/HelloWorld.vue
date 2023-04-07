@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <slot name="header"></slot>
+    <slot name="default"></slot>
+    <slot name="footer" :aaa="aaa"></slot>
   </div>
 </template>
 
@@ -12,12 +15,8 @@ export default {
   },
   data(){
     return{
-      msg1:"我是hello的数据"
+      aaa:"大家好!!!"
     }
-  },
-  mounted(){
-    // console.log(this.$parent.msg)
-    // console.log(this.$root.msg)
   }
 }
 </script>
