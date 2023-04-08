@@ -7,14 +7,31 @@
   <body>
     <div id="app">
       <p class="b">{{msg}}</p>
-      <p class="b">{{person.name}}</p>
-      <p class="b">{{arr.0}}</p>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
+      /*
+        前言:
+          1.MVVM源码不是Vue2的源码,是Vue1的源码
+            它内部没有虚拟DOM,没有生命周期
+
+          2.Vue1的响应式原理和Vue2的几乎相同
+
+        学习源码的目的:
+          1.应付面试
+            观察源码中做了哪些事情,将重点全部抽取出来
+            组合成一个流程文档
+
+          2.提高代码能力
+            研究学习源码中,比较好的写法,提高自己的代码编写能力
+
+        学习源码建议:
+          1.没有使用的函数不要看
+          2.每次调用函数的时候,都研究清楚他的this和参数
+      */
       var vm = new MVVM({
         el: "#app",
         data: {
@@ -25,6 +42,14 @@
           }
         }
       });
+
+      /*
+        vm.person.name="xiaohong"
+        触发了几次数据劫持?
+        触发了几次数据代理?
+        代码解析流程是怎么样的?
+      */
+
     </script>
   </body>
 </html>
