@@ -15,7 +15,7 @@ function MVVM(options) {
 
   this.$options = options;
 
-  var data = vm._data = this.$options.data;
+  var data = this._data = this.$options.data;
   // var data = (this._data = this.$options.data);
   // this._data = this.$options.data;
   // var data = this.$options.data;
@@ -108,7 +108,28 @@ function MVVM(options) {
   observe(data, this);
   // observe(data, vm);
 
+  /*
+    MVVM源码第三部分:模版解析
+    目的:用于获取页面上的模版内容,并将内部的插值语法以及指令解析成对应的效果
+    流程:
+      1.构造调用new Compile方法,并传入目标元素和当前组件实例对象,开始准备解析模版
+      2.在Compile函数中,
+        -将目标元素中,所有的子节点全部转移到文档碎片中
+        -调用init函数,开始解析模版
+        -将解析完的文档碎片,插入到页面上,进行显示
+      3.在init方法中,
+        -会获取到当前文档碎片中,所有的子节点,并进行遍历处理
+          如果遍历得到的节点,是元素节点,就开始获取他身上所有的标签属性,准备解析指令
+          如果遍历得到的节点,是文本节点,而且它使用了插值语法,那么就开启解析插值语法
+      4.在遍历插值语法的过程中,会调用到bind方法,
+        -找到用于更新文本的文本更新器
+        -获取到插值语法对应的结果值,然后传给更新器,用于更新对应的文本节点内容
+        -会创建一个全新的watcher对象
+          总结:每个插值语法都会产生一个对应的watcher对象
+          回顾:data中每具有一个响应式属性,就会产生一个dep对象
+  */
   this.$compile = new Compile(options.el || document.body, this);
+  // this.$compile = new Compile("#app", this);
 }
 
 MVVM.prototype = {
