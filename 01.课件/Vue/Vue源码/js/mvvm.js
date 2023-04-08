@@ -15,7 +15,7 @@ function MVVM(options) {
 
   this.$options = options;
 
-  var data = this._data = this.$options.data;
+  var data = vm._data = this.$options.data;
   // var data = (this._data = this.$options.data);
   // this._data = this.$options.data;
   // var data = this.$options.data;
