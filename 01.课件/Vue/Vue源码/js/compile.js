@@ -170,7 +170,7 @@ var compileUtil = {
     },
 
     bind: function(node, vm, exp, dir) {
-        // this.bind(text节点, vm, exp, 'text');
+        // this.bind(text节点, vm, "msg", 'text');
 
         // 找到了更新文本的函数(文本更新器)
         var updaterFn = updater[dir + 'Updater'];
@@ -186,6 +186,10 @@ var compileUtil = {
         new Watcher(vm, exp, function(value, oldValue) {
             updaterFn && updaterFn(node, value, oldValue);
         });
+
+        // new Watcher(vm, "msg", function(value, oldValue) {
+        //     textUpdater && textUpdater(text节点, value, oldValue);
+        // });
 
     },
 

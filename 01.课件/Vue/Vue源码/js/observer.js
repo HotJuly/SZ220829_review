@@ -123,11 +123,18 @@ function Dep() {
 
 Dep.prototype = {
     addSub: function(sub) {
+        //  dep.addSub(watcher);
+
+        // 此处dep对象使用subs数组,收集到了与自身相关的watcher对象
+        // 响应式属性,使用subs数组,收集到了与自身相关的插值语法
         this.subs.push(sub);
+        // this.subs.push(watcher)
     },
 
     depend: function() {
+        // this->dep对象
         Dep.target.addDep(this);
+        // watcher.addDep(dep);
     },
 
     removeSub: function(sub) {
@@ -138,9 +145,13 @@ Dep.prototype = {
     },
 
     notify: function() {
+        // subs数据类型数组,内部存的是使用到当前响应式属性的watcher对象
         this.subs.forEach(function(sub) {
             sub.update();
         });
+        // this.subs.forEach(function(sub) {
+        //     watcher.update();
+        // });
     }
 };
 
