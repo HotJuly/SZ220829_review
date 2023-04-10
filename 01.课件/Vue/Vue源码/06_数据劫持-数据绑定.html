@@ -9,6 +9,7 @@
       <p class="b">{{msg}}</p>
       <p class="b">{{msg}}</p>
       <p class="b">{{person.name}}</p>
+      <h1>arr[1]:{{arr.1}}</h1>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
@@ -41,7 +42,8 @@
           person:{
             name:"xiaoming",
             msg:"123"
-          }
+          },
+          arr:[1,2,3,4]
         }
       });
 
@@ -88,8 +90,11 @@
       */
 
       setTimeout(()=>{
-        vm.msg="hello world!!!!!!!!!!!!"
-        debugger
+        // vm.msg="hello world!!!!!!!!!!!!"
+        // debugger
+
+        vm.arr[1] = 7;
+        console.log(vm.arr)
       },2000)
 
     </script>
