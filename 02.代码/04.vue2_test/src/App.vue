@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ul>
+    <li v-for="(item,index) in arr" :key="index">
+      <label>{{item}} : </label>
+      <input type="text">
+    </li>
+  </ul>
+  <button @click="handler">+6</button>
   </div>
 </template>
 
@@ -9,32 +15,18 @@ import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  },
   data(){
     return{
-      msg:123
+      arr:[1,2,3,4,5]
     }
   },
-  // computed:{
-  //   doubleCount(){
-      
-  //   }
-  // },
-  beforeCreate(){
-    // console.log('------App beforeCreate------',this,this.$data,this.msg,this.$el)
+  methods:{
+    handler(){
+      this.arr.splice(1,0,6)
+    }
   },
-  created(){
-    // console.log('------App created------',this,this.$data,this.msg,this.$el)
-  },
-  beforeMount(){
-    // console.log('------App beforeMount------',this,this.$data,this.msg,this.$el)
-    console.log('------App beforeMount------',this.$vnode,this._vnode)
-  },
-  mounted(){
-    console.log('------App mounted------',this.$vnode,this._vnode)
-    // console.log('------App mounted------',this,this.$data,this.msg,this.$el)
+  components: {
+    HelloWorld
   }
 }
 </script>
