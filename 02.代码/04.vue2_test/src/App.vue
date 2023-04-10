@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <h1>arr[1]:{{arr[1]}}</h1>
-    <h1>arr[3].name:{{arr[3].name}}</h1>
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -16,29 +14,27 @@ export default {
   },
   data(){
     return{
-      // arr:Object.freeze([1,2,3,{
-      //   name:"xiaoming"
-      // }]),
-      arr:[1,2,3,{
-        name:"xiaoming"
-      }]
+      msg:123
     }
   },
+  // computed:{
+  //   doubleCount(){
+      
+  //   }
+  // },
+  beforeCreate(){
+    // console.log('------App beforeCreate------',this,this.$data,this.msg,this.$el)
+  },
+  created(){
+    // console.log('------App created------',this,this.$data,this.msg,this.$el)
+  },
+  beforeMount(){
+    // console.log('------App beforeMount------',this,this.$data,this.msg,this.$el)
+    console.log('------App beforeMount------',this.$vnode,this._vnode)
+  },
   mounted(){
-    setTimeout(()=>{
-      // this.arr[1] = 7;
-      this.arr.splice(1,1,7)
-      // this.arr.map(()=>{
-
-      // })
-
-      // this.arr[3].name="laowang"
-      console.log(this.arr)
-
-      // const arr = [1,2,3,4];
-      // arr.splice(1,1,7);
-      // console.log(arr)
-    },2000)
+    console.log('------App mounted------',this.$vnode,this._vnode)
+    // console.log('------App mounted------',this,this.$data,this.msg,this.$el)
   }
 }
 </script>
