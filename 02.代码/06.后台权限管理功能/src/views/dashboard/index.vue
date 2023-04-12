@@ -2,9 +2,9 @@
   <div class="dashboard-editor-container">
     <PanelGroup @handleSetLineChartData="handleSetLineChartData"/>
 
-    <!-- <div class="chart-line">
-      <line-chart :chart-data="lineChartData" :yTitle="yTitle"/>
-    </div> -->
+    <!-- <div class="chart-line"> -->
+      <!-- <line-chart :chart-data="lineChartData" :yTitle="yTitle"/> -->
+    <!-- </div> -->
 
     <el-row :gutter="20" class="chart-row">
       <el-col :xs="24" :sm="24" :lg="12">
