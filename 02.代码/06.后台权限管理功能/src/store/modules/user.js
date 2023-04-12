@@ -2,6 +2,7 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter , constantRoutes, asyncRoutes, anyRoutes } from '@/router'
 import router from '@/router';
+import {cloneDeep} from 'lodash';
 
 function filterAsyncRoutes(asyncRoutes,routeNames){
   /*
@@ -45,7 +46,10 @@ const getDefaultState = () => {
 
     // 用于存储路由级别的权限信息
     // 内部存放的是当前账号有资格访问的路由别名
-    routeNames:[]
+    routeNames:[],
+
+    // 用于解决左侧动态列表的显示问题
+    menuList:[]
   }
 }
 
@@ -67,10 +71,16 @@ const mutations = {
   SET_PERMISSION: (state, {routes,buttons}) => {
     state.buttons = buttons;
     state.routeNames = routes;
-    const newAsyncRoutes = filterAsyncRoutes(asyncRoutes,state.routeNames);
 
-    console.log('newAsyncRoutes',newAsyncRoutes)
-    router.addRoutes(newAsyncRoutes)
+    // 这行是因为服务器原因,临时演示方案
+    routes.push("Product");
+
+    const newAsyncRoutes = filterAsyncRoutes(cloneDeep(asyncRoutes),state.routeNames);
+
+    // console.log('newAsyncRoutes',newAsyncRoutes)
+    router.addRoutes([...newAsyncRoutes,...anyRoutes]);
+
+    state.menuList = [...constantRoutes,...newAsyncRoutes,...anyRoutes];
   }
 }
 

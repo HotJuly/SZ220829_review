@@ -58,6 +58,19 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+Vue.directive("has",{
+  inserted(el,{value}){
+    // console.log(el,value)
+
+    // 判断用户是否有使用当前按钮的权限,
+    // 如果没有权限就删除该按钮
+    const result = store.state.user.buttons.includes(value);
+    if(!result){
+      el.parentNode.removeChild(el);
+    }
+  }
+})
+
 
 new Vue({
   el: '#app',

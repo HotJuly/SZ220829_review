@@ -34,7 +34,7 @@ export default {
     //   return this.$router.options.routes
     // },
     routes(){
-      return this.$router.options.routes
+      return this.$store.state.user.menuList
     },
     activeMenu() {
       const route = this.$route
