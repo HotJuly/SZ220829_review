@@ -11,6 +11,14 @@ export default {
 </script>
 
 <script setup>
+import {useAttrs} from 'vue';
+const props = defineProps(["a"]);
+const attrs = useAttrs();
+
+setTimeout(()=>{
+  console.log('props',props)
+  console.log('attrs',attrs)
+},3000)
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

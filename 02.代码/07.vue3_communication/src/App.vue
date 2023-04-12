@@ -1,5 +1,7 @@
 <template>
-  <HelloWorld a="1" b="2" c="3" @abc="()=>{}" @ddd="()=>{}"/>
+  <h1>pageX:{{ pageX }}</h1>
+  <h1>pageY:{{ pageY }}</h1>
+  <!-- <HelloWorld/> -->
 </template>
 
 <script>
@@ -9,9 +11,9 @@ export default {
 </script>
 
 <script setup>
-import HelloWorld from '@/components/HelloWorld'
+import moveHook from './hooks/moveHook';
 
+const {pageX,pageY} = moveHook();
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            Vue2存在的BUG:
+                1.新增属性很有可能不是响应式属性
+                    会导致修改这些属性的时候,页面没有响应式效果
+                    解决方法:this.$set(target,key,value)
+
+                2.删除属性没有响应式效果
+                    会导致删除属性,页面显示的还是旧的数据
+                    解决方法:this.$delete(target,key)
+
+                3.数组的下标没有响应式效果
+                    原因:没有必要,如果对数组的下标做数据劫持,很可能产生大量的无用dep对象,
+                        增加内存的消耗,所以Vue2故意跳过数组下标的数据劫持
+
+            响应式属性:
+                当属性值发生变化的时候,页面需要自动展示最新数据
+                本质:他是一个访问描述符,通过set方法可以监视用户对数据的修改
+        */
+
+        // 相当于是set方法
+    //    function observe(target,key,value){
+    //     Object.defineProperty(target,key,{
+    //         get(){
+    //             console.log('get success');
+    //             return value;
+    //         },
+    //         set(){
+    //             console.log('set success');
+    //             // dep.notify()->通知DOM更新
+    //         }
+    //     })
+    //    }
+
+
+    //    相当于是delete方法
+    // function deleteProp(target,key){
+    //     delete target[key];
+    //     dep.notify();
+    // }
+        // var data = {
+        //     name:"xiaoming"
+        // }
+
+        // Object.defineProperty(data,"name",{
+        //     get(){
+        //         console.log('get success');
+        //         return "小红";
+        //     },
+        //     set(){
+        //         console.log('set success');
+        //         // dep.notify()->通知DOM更新
+        //     }
+        // })
+
+        // data.name = "xiaowang"
+
+        // 以下写法添加的属性,一定是数据描述符,他没办法监视到用户的属性值修改操作
+        // data.age = 23;
+
+        // observe(data,"age",23)
+        // console.log(data)
+
+        // 
+        // delete data.name;
+
+
+        //---------------------------------------------------
+        
+        // 这个是元对象,他身上存储着所有的数据,所有的属性都是数据描述符,所以没有响应式效果
+        // var data = {
+        //     name:"xiaoming"
+        // }
+        var data = [1,2,3,4,5,6,7,98,0]
+
+        // 这是代理对象,他没有任何的数据,但是它具有监听对象任何操作的功能
+        var proxyObj = new Proxy(data,{
+            set(target,key,value){
+                console.log('set success');
+                // dep.notify() -> 通知DOM更新
+                // target[key] = value;
+                Reflect.set(target,key,value);
+            },
+            get(target,key){
+                console.log('get success')
+                // return target[key]
+                return Reflect.get(target,key);
+            },
+            deleteProperty(){
+                console.log('deleteProperty success')
+                Reflect.deleteProperty(target,key);
+            },
+            has(){
+                return true;
+            },
+            getPrototypeOf(){
+                return {
+                    name:"laowang"
+                }
+            }
+        })
+
+        // proxyObj.name = "老王666";
+        // console.log(proxyObj.name)
+        // console.log(data)
+
+        // delete proxyObj.name;
+        // proxyObj.age = 23;
+
+        // proxyObj[1] = 7;
+        // proxyObj[5] = 8;
+
+        // console.log(data,proxyObj)
+
+        // console.log("abc" in proxyObj)
+        // console.log(Object.getPrototypeOf(proxyObj))
+
+        console.log(proxyObj[3])
+    </script>
+</body>
+</html>
