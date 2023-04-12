@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button v-has="'btn.Trademark.add123123123123'" style="margin-top: 20px" type="primary" icon="el-icon-plus" @click="showDialog">添加</el-button>
+    <el-button v-has="'btn.Trademark.add'" style="margin-top: 20px" type="primary" icon="el-icon-plus" @click="showDialog">添加</el-button>
     <!-- <el-button v-if="$store.state.user.buttons.includes('btn.Trademark.add')" style="margin-top: 20px" type="primary" icon="el-icon-plus" @click="showDialog">添加</el-button> -->
     <!-- 
       border->用于让整个table表格添加边框
